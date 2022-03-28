@@ -13,30 +13,34 @@ function checkValidity(joiningDate, validityDate) {
 }
 
 function Search({ setFunc, values }) {
-  const [studentName, setStudentName] = useState();
-  const [joiningDate, setJoiningDate] = useState();
-  console.log(setFunc);
-  console.log(values.residentList);
+  const [studentName, setStudentName] = useState("");
+  const [joiningDate, setJoiningDate] = useState("gg.aa.yyy");
   const setterFunc = () => {
     setFunc.setStudent(studentName);
     setFunc.setJoinDate(joiningDate);
+
+    STUDENTS.filter((i) => {
+      if (
+        STUDENTS.filter(
+          (i) => i.name == studentName && i.validityDate === joiningDate
+        )[0] !== undefined && !values.residentList.includes(studentName)
+      ) {
+        return setFunc.setResidentList([
+          ...values.residentList,
+          STUDENTS.filter(
+            (i) => i.name == studentName && i.validityDate === joiningDate
+          )[0],
+        ]);
+      }
+    });
+
     setStudentName("");
     setJoiningDate("gg.aa.yyyy");
-    console.log(
-      STUDENTS.filter(
-        (i) => i.name == studentName && i.validityDate === joiningDate
-      )
-    );
-    setFunc.setResidentList(
-      ...values.residentList,
-      STUDENTS.filter(
-        (i) => i.name == studentName && i.validityDate === joiningDate
-      )[0]
-    );
+    setFunc.setErrTime(true)
   };
 
   return (
-    <div className="my-50 layout-row align-items-end justify-content-end">
+    <div className="my-50 d-flex flex-column layout-row align-items-center justify-content-center form-group">
       <label htmlFor="studentName">
         Student Name:
         <div>
@@ -46,7 +50,7 @@ function Search({ setFunc, values }) {
             onChange={(e) => setStudentName(e.target.value)}
             value={studentName}
             type="text"
-            className="mr-30 mt-10"
+            className="mr-30 mt-10 input-group-text"
           />
         </div>
       </label>
@@ -59,7 +63,7 @@ function Search({ setFunc, values }) {
             onChange={(e) => setJoiningDate(e.target.value)}
             data-testid="joiningDate"
             type="date"
-            className="mr-30 mt-10"
+            className="mr-30 mt-10 input-group date"
           />
         </div>
       </label>
@@ -67,7 +71,7 @@ function Search({ setFunc, values }) {
         onClick={setterFunc}
         type="button"
         data-testid="addBtn"
-        className="small mb-0"
+        className="btn btn-success my-3 small"
       >
         Add
       </button>

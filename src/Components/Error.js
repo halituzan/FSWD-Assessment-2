@@ -1,18 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { STUDENTS } from "../studentList";
-console.log(STUDENTS);
-function Error({ values }) {
-  console.log(values.joinDate);
-  console.log(STUDENTS[0].validityDate);
 
+function Error({ values,errFunc }) {
+
+
+  useEffect(() => {
+    const timeSet = setTimeout(() => {
+      errFunc(false);
+    }, 5000);
+
+    return () => clearTimeout(timeSet);
+  }, [values.errTime]);
+
+ 
   return (
-    <div data-testid="errorMsg" className="alert error mt-20 slide-up-fade-in">
+    <div
+      data-testid="errorMsg"
+      className="alert error mt-20 slide-up-fade-in"
+      style={values.errTime ? { display: "block" } : { display: "none" }}
+    >
       {values.student !== ""
         ? !STUDENTS.map((i) => i.name).includes(values.student)
-			? `Sorry, ${values.student} is not a verified student`
-			: STUDENTS.map((i) => i.name).includes(values.student) && !STUDENTS.map((i) => i.validityDate).includes(values.joinDate)
-			? `Sorry, ${values.student}'s validity has Expried`
-			: ""
+          ? `Sorry, ${values.student} is not a verified student`
+          : STUDENTS.map((i) => i.name).includes(values.student) &&
+            !STUDENTS.map((i) => i.validityDate).includes(values.joinDate)
+          ? `Sorry, ${values.student}'s validity has Expried`
+          : ""
         : ""}
     </div>
   );

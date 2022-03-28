@@ -11,3 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+#joiningDate {
+  padding: 5px 10px;
+  font-size: 20px;
+}
