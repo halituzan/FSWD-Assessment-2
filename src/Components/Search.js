@@ -20,23 +20,21 @@ function Search({ setFunc, values }) {
     setFunc.setJoinDate(joiningDate);
 
     STUDENTS.filter((i) => {
-      if (
-        STUDENTS.filter(
-          (i) => i.name == studentName && i.validityDate === joiningDate
-        )[0] !== undefined && !values.residentList.includes(studentName)
-      ) {
+      if ((STUDENTS.filter((i) => i.name.toLowerCase() == studentName.toLowerCase() && i.validityDate === joiningDate)[0] !== undefined) && !values.residentList.some(i=>i.name.toLowerCase()=== studentName.toLowerCase())) {
         return setFunc.setResidentList([
           ...values.residentList,
           STUDENTS.filter(
-            (i) => i.name == studentName && i.validityDate === joiningDate
+            (i) =>
+              i.name.toLowerCase() == studentName.toLowerCase() &&
+              i.validityDate === joiningDate
           )[0],
         ]);
-      }
+      } 
     });
 
     setStudentName("");
     setJoiningDate("gg.aa.yyyy");
-    setFunc.setErrTime(true)
+    setFunc.setErrTime(true);
   };
 
   return (
